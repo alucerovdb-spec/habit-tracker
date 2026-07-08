@@ -1,1 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+.ht-root {
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --ink: #18181B;
+  --ink-soft: #8B8B93;
+  --ink-faint: #C4C4CA;
+  --accent: #4F46E5;
+  --accent-soft: #EEF0FF;
+  --border: #E7E7EA;
+  --danger: #DC2626;
+
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--surface);
+  max-width: 440px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+* { box-sizing: border-box; }
+
+.ht-header {
+  padding: 26px 24px 0;
+  background: var(--surface);
+}
+.ht-weekday {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 4px;
+}
+.ht-date {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+.ht-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.ht-progress-row b { color: var(--ink); font-weight: 600; }
+.ht-progress-bar-bg {
+  height: 5px;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.ht-progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.ht-tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.ht-tab {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 0 0 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  user-select: none;
+}
+.ht-tab.active {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom-color: var(--accent);
+}
+
+.ht-body { padding: 20px 24px 26px; min-height: 200px; }
+.ht-view { display: none; }
+.ht-view.active { display: block; }
+
+.ht-habit-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ht-habit-row:last-child { border-bottom: none; }
+
+.ht-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-faint);
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.ht-check.done {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.ht-check svg { width: 13px; height: 13px; opacity: 0; transition: opacity 0.1s; }
+.ht-check.done svg { opacity: 1; }
+
+.ht-habit-main { flex: 1; min-width: 0; }
+.ht-habit-name {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ht-habit-name.done { color: var(--ink-faint); text-decoration: line-through; }
+.ht-habit-name input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  font-weight: 500;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 3px 6px;
+  width: 100%;
+  outline: none;
+}
+.ht-streak {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 1px;
+}
+
+.ht-row-edit-btns { display: flex; gap: 6px; flex-shrink: 0; }
+.ht-icon-btn {
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ht-icon-btn:hover { background: var(--bg); color: var(--ink); }
+.ht-icon-btn.danger:hover { color: var(--danger); background: #FEF2F2; }
+
+.ht-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.ht-add-row input {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
