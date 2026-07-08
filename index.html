@@ -1,0 +1,683 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.ht-root {
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --ink: #18181B;
+  --ink-soft: #8B8B93;
+  --ink-faint: #C4C4CA;
+  --accent: #4F46E5;
+  --accent-soft: #EEF0FF;
+  --border: #E7E7EA;
+  --danger: #DC2626;
+
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--surface);
+  max-width: 440px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+* { box-sizing: border-box; }
+
+.ht-header {
+  padding: 26px 24px 0;
+  background: var(--surface);
+}
+.ht-weekday {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 4px;
+}
+.ht-date {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+.ht-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.ht-progress-row b { color: var(--ink); font-weight: 600; }
+.ht-progress-bar-bg {
+  height: 5px;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.ht-progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.ht-tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.ht-tab {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 0 0 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  user-select: none;
+}
+.ht-tab.active {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom-color: var(--accent);
+}
+
+.ht-body { padding: 20px 24px 26px; min-height: 200px; }
+.ht-view { display: none; }
+.ht-view.active { display: block; }
+
+/* ---- Today checklist ---- */
+.ht-habit-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ht-habit-row:last-child { border-bottom: none; }
+
+.ht-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-faint);
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.ht-check.done {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.ht-check svg { width: 13px; height: 13px; opacity: 0; transition: opacity 0.1s; }
+.ht-check.done svg { opacity: 1; }
+
+.ht-habit-main { flex: 1; min-width: 0; }
+.ht-habit-name {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ht-habit-name.done { color: var(--ink-faint); text-decoration: line-through; }
+.ht-habit-name input {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  font-weight: 500;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 3px 6px;
+  width: 100%;
+  outline: none;
+}
+.ht-streak {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 1px;
+}
+
+.ht-row-edit-btns { display: flex; gap: 6px; flex-shrink: 0; }
+.ht-icon-btn {
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ht-icon-btn:hover { background: var(--bg); color: var(--ink); }
+.ht-icon-btn.danger:hover { color: var(--danger); background: #FEF2F2; }
+
+.ht-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.ht-add-row input {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+  background: var(--bg);
+}
+.ht-add-row input:focus { border-color: var(--accent); border-style: solid; }
+.ht-add-btn {
+  width: 40px;
+  border-radius: 10px;
+  border: none;
+  background: var(--ink);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.ht-edit-toggle {
+  display: block;
+  margin: 16px auto 0;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px;
+}
+.ht-edit-toggle.on { color: var(--accent); }
+
+.ht-empty {
+  text-align: center;
+  padding: 30px 10px;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* ---- Progreso ---- */
+.ht-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 12px;
+}
+.ht-week-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 90px;
+  margin-bottom: 28px;
+}
+.ht-week-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.ht-week-bar-bg {
+  width: 100%;
+  max-width: 26px;
+  height: 70px;
+  background: var(--accent-soft);
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.ht-week-bar-fill {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 6px 6px 0 0;
+  min-height: 3px;
+  transition: height 0.25s ease;
+}
+.ht-week-bar-fill.today { background: var(--ink); }
+.ht-week-label {
+  font-size: 10px;
+  color: var(--ink-soft);
+  text-transform: lowercase;
+}
+
+.ht-stat-row {
+  margin-bottom: 14px;
+}
+.ht-stat-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+.ht-stat-name { font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.ht-stat-pct { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.ht-stat-bar-bg {
+  height: 6px;
+  background: var(--bg);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.ht-stat-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+/* ---- Mes ---- */
+.ht-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.ht-month-nav button {
+  background: var(--bg);
+  border: none;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 15px;
+}
+.ht-month-title { font-weight: 700; font-size: 14px; text-transform: capitalize; }
+
+.ht-month-grid-wrap { overflow-x: auto; padding-bottom: 4px; }
+.ht-month-grid { display: table; border-collapse: collapse; }
+.ht-mg-row { display: table-row; }
+.ht-mg-cell { display: table-cell; vertical-align: middle; padding: 1px; }
+.ht-mg-label {
+  position: sticky; left: 0;
+  background: var(--surface);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink);
+  padding-right: 10px !important;
+  max-width: 84px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ht-mg-daynum {
+  font-size: 8.5px;
+  color: var(--ink-faint);
+  text-align: center;
+  width: 12px;
+}
+.ht-mg-dot {
+  width: 9px; height: 9px;
+  border-radius: 3px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.ht-mg-dot.done { background: var(--accent); border-color: var(--accent); }
+.ht-mg-dot.today-col { box-shadow: 0 0 0 1.5px var(--ink); }
+.ht-mg-dot.future { opacity: 0.35; }
+.ht-mg-pct {
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  padding-left: 10px !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+</style>
+
+<div class="ht-root">
+  <div class="ht-header">
+    <p class="ht-weekday" id="ht-weekday">—</p>
+    <p class="ht-date" id="ht-date-full">—</p>
+    <div class="ht-progress-row">
+      <span>Hoy</span>
+      <span><b id="ht-progress-count">0/0</b></span>
+    </div>
+    <div class="ht-progress-bar-bg"><div class="ht-progress-bar-fill" id="ht-progress-bar" style="width:0%"></div></div>
+    <div class="ht-tabs">
+      <div class="ht-tab active" data-view="hoy">Hoy</div>
+      <div class="ht-tab" data-view="progreso">Progreso</div>
+      <div class="ht-tab" data-view="mes">Mes</div>
+    </div>
+  </div>
+
+  <div class="ht-body">
+    <div class="ht-view active" id="ht-view-hoy">
+      <div id="ht-habit-list"></div>
+      <div class="ht-add-row">
+        <input type="text" id="ht-new-habit" placeholder="Nuevo hábito (ej: Leer 20 min)" />
+        <button class="ht-add-btn" id="ht-add-btn">＋</button>
+      </div>
+      <button class="ht-edit-toggle" id="ht-edit-toggle">Editar hábitos</button>
+    </div>
+
+    <div class="ht-view" id="ht-view-progreso">
+      <p class="ht-section-title">Últimos 7 días</p>
+      <div class="ht-week-chart" id="ht-week-chart"></div>
+      <p class="ht-section-title">Cumplimiento (30 días)</p>
+      <div id="ht-stats-list"></div>
+    </div>
+
+    <div class="ht-view" id="ht-view-mes">
+      <div class="ht-month-nav">
+        <button id="ht-month-prev">‹</button>
+        <span class="ht-month-title" id="ht-month-title">—</span>
+        <button id="ht-month-next">›</button>
+      </div>
+      <div class="ht-month-grid-wrap">
+        <div class="ht-month-grid" id="ht-month-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const HABITS_KEY = 'ht_habits';
+  const COMPLETIONS_KEY = 'ht_completions';
+  let habits = [];
+  let completions = {};
+  let editMode = false;
+  let currentView = 'hoy';
+  let monthOffset = 0; // 0 = current month
+  let pendingDelete = null;
+
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => document.querySelectorAll(sel);
+
+  function dateKey(d) { return d.toLocaleDateString('en-CA'); }
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  function load() {
+    try { habits = JSON.parse(localStorage.getItem(HABITS_KEY) || '[]'); } catch (e) { habits = []; }
+    try { completions = JSON.parse(localStorage.getItem(COMPLETIONS_KEY) || '{}'); } catch (e) { completions = {}; }
+  }
+  function saveHabits() { localStorage.setItem(HABITS_KEY, JSON.stringify(habits)); }
+  function saveCompletions() { localStorage.setItem(COMPLETIONS_KEY, JSON.stringify(completions)); }
+
+  function isDone(habitId, dKey) {
+    return !!(completions[dKey] && completions[dKey][habitId]);
+  }
+  function toggleDone(habitId, dKey) {
+    if (!completions[dKey]) completions[dKey] = {};
+    if (completions[dKey][habitId]) delete completions[dKey][habitId];
+    else completions[dKey][habitId] = true;
+    saveCompletions();
+  }
+
+  function computeStreak(habitId) {
+    let d = new Date();
+    let streak = 0;
+    if (!isDone(habitId, dateKey(d))) d.setDate(d.getDate() - 1);
+    while (isDone(habitId, dateKey(d))) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    }
+    return streak;
+  }
+
+  function activeHabits() { return habits.filter(h => !h.archived); }
+
+  function renderHeader() {
+    const now = new Date();
+    const weekday = now.toLocaleDateString('es-CL', { weekday: 'long' });
+    const full = now.toLocaleDateString('es-CL', { day: 'numeric', month: 'long' });
+    $('#ht-weekday').textContent = weekday;
+    $('#ht-date-full').textContent = full;
+
+    const list = activeHabits();
+    const today = dateKey(now);
+    const doneCount = list.filter(h => isDone(h.id, today)).length;
+    $('#ht-progress-count').textContent = doneCount + '/' + list.length;
+    const pct = list.length ? (doneCount / list.length) * 100 : 0;
+    $('#ht-progress-bar').style.width = pct + '%';
+  }
+
+  function renderToday() {
+    const list = activeHabits();
+    const today = dateKey(new Date());
+    const wrap = $('#ht-habit-list');
+    wrap.innerHTML = '';
+    if (list.length === 0) {
+      wrap.innerHTML = '<div class="ht-empty">Aún no tienes hábitos.<br/>Agrega el primero abajo 👇</div>';
+      return;
+    }
+    list.forEach(h => {
+      const done = isDone(h.id, today);
+      const streak = computeStreak(h.id);
+      const row = document.createElement('div');
+      row.className = 'ht-habit-row';
+      row.innerHTML = `
+        <div class="ht-check ${done ? 'done' : ''}" data-id="${h.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <div class="ht-habit-main">
+          <div class="ht-habit-name ${done ? 'done' : ''}" data-id="${h.id}">${h.name}</div>
+          ${streak >= 2 ? `<div class="ht-streak">🔥 ${streak} días seguidos</div>` : ''}
+        </div>
+        ${editMode ? `
+        <div class="ht-row-edit-btns">
+          <button class="ht-icon-btn" data-rename="${h.id}" title="Renombrar">✎</button>
+          <button class="ht-icon-btn danger" data-delete="${h.id}" title="Eliminar">🗑</button>
+        </div>` : ''}
+      `;
+      wrap.appendChild(row);
+    });
+
+    wrap.querySelectorAll('.ht-check').forEach(el => {
+      el.addEventListener('click', () => {
+        toggleDone(el.getAttribute('data-id'), today);
+        renderAll();
+      });
+    });
+    if (editMode) {
+      wrap.querySelectorAll('[data-rename]').forEach(btn => {
+        btn.addEventListener('click', () => startRename(btn.getAttribute('data-rename')));
+      });
+      wrap.querySelectorAll('[data-delete]').forEach(btn => {
+        btn.addEventListener('click', () => handleDeleteClick(btn));
+      });
+    }
+  }
+
+  function handleDeleteClick(btn) {
+    const id = btn.getAttribute('data-delete');
+    if (pendingDelete === id) {
+      habits = habits.filter(h => h.id !== id);
+      saveHabits();
+      pendingDelete = null;
+      renderAll();
+    } else {
+      pendingDelete = id;
+      btn.textContent = '✔';
+      btn.title = 'Confirmar eliminación';
+      setTimeout(() => { if (pendingDelete === id) { pendingDelete = null; renderAll(); } }, 3000);
+    }
+  }
+
+  function startRename(id) {
+    const nameEl = document.querySelector(`.ht-habit-name[data-id="${id}"]`);
+    if (!nameEl) return;
+    const habit = habits.find(h => h.id === id);
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = habit.name;
+    nameEl.replaceWith(input);
+    input.focus();
+    input.select();
+    const commit = () => {
+      const val = input.value.trim();
+      if (val) habit.name = val;
+      saveHabits();
+      renderAll();
+    };
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') input.blur(); });
+  }
+
+  function addHabit() {
+    const input = $('#ht-new-habit');
+    const name = input.value.trim();
+    if (!name) return;
+    habits.push({ id: uid(), name, createdAt: dateKey(new Date()), archived: false });
+    saveHabits();
+    input.value = '';
+    renderAll();
+  }
+
+  function renderWeekChart() {
+    const chart = $('#ht-week-chart');
+    chart.innerHTML = '';
+    const list = activeHabits();
+    const now = new Date();
+    const dayLabels = ['dom','lun','mar','mié','jue','vie','sáb'];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dK = dateKey(d);
+      const doneCount = list.filter(h => isDone(h.id, dK)).length;
+      const pct = list.length ? (doneCount / list.length) * 100 : 0;
+      const col = document.createElement('div');
+      col.className = 'ht-week-col';
+      col.innerHTML = `
+        <div class="ht-week-bar-bg"><div class="ht-week-bar-fill ${i === 0 ? 'today' : ''}" style="height:${Math.max(pct,pct>0?4:0)}%"></div></div>
+        <div class="ht-week-label">${dayLabels[d.getDay()]}</div>
+      `;
+      chart.appendChild(col);
+    }
+  }
+
+  function renderStats() {
+    const list = activeHabits();
+    const wrap = $('#ht-stats-list');
+    wrap.innerHTML = '';
+    if (list.length === 0) {
+      wrap.innerHTML = '<div class="ht-empty">Agrega hábitos para ver tu progreso.</div>';
+      return;
+    }
+    const now = new Date();
+    list.forEach(h => {
+      let doneCount = 0, totalDays = 0;
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        if (dateKey(d) < h.createdAt) break;
+        totalDays++;
+        if (isDone(h.id, dateKey(d))) doneCount++;
+      }
+      const pct = totalDays ? Math.round((doneCount / totalDays) * 100) : 0;
+      const streak = computeStreak(h.id);
+      const row = document.createElement('div');
+      row.className = 'ht-stat-row';
+      row.innerHTML = `
+        <div class="ht-stat-top">
+          <span class="ht-stat-name">${h.name} ${streak >= 2 ? '<span>🔥' + streak + '</span>' : ''}</span>
+          <span class="ht-stat-pct">${pct}%</span>
+        </div>
+        <div class="ht-stat-bar-bg"><div class="ht-stat-bar-fill" style="width:${pct}%"></div></div>
+      `;
+      wrap.appendChild(row);
+    });
+  }
+
+  function renderMonthGrid() {
+    const list = activeHabits();
+    const base = new Date();
+    base.setDate(1);
+    base.setMonth(base.getMonth() + monthOffset);
+    const year = base.getFullYear();
+    const month = base.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const title = base.toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+    $('#ht-month-title').textContent = title;
+
+    const todayKey = dateKey(new Date());
+    const grid = $('#ht-month-grid');
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="ht-empty">Agrega hábitos para ver el calendario.</div>';
+      return;
+    }
+
+    const headerRow = document.createElement('div');
+    headerRow.className = 'ht-mg-row';
+    headerRow.innerHTML = '<div class="ht-mg-cell ht-mg-label"></div>' +
+      Array.from({length: daysInMonth}, (_, i) => `<div class="ht-mg-cell ht-mg-daynum">${i+1}</div>`).join('') +
+      '<div class="ht-mg-cell"></div>';
+    grid.appendChild(headerRow);
+
+    list.forEach(h => {
+      const row = document.createElement('div');
+      row.className = 'ht-mg-row';
+      let cellsHtml = `<div class="ht-mg-cell ht-mg-label">${h.name}</div>`;
+      let doneInMonth = 0, countedDays = 0;
+      for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(year, month, day);
+        const dK = dateKey(d);
+        const isFuture = dK > todayKey;
+        const beforeCreation = dK < h.createdAt;
+        const done = !isFuture && !beforeCreation && isDone(h.id, dK);
+        if (done) doneInMonth++;
+        if (!isFuture && !beforeCreation) countedDays++;
+        cellsHtml += `<div class="ht-mg-cell"><div class="ht-mg-dot ${done ? 'done' : ''} ${dK === todayKey ? 'today-col' : ''} ${isFuture ? 'future' : ''}"></div></div>`;
+      }
+      const pct = countedDays ? Math.round((doneInMonth / countedDays) * 100) : 0;
+      cellsHtml += `<div class="ht-mg-cell ht-mg-pct">${pct}%</div>`;
+      row.innerHTML = cellsHtml;
+      grid.appendChild(row);
+    });
+  }
+
+  function renderAll() {
+    renderHeader();
+    renderToday();
+    renderWeekChart();
+    renderStats();
+    renderMonthGrid();
+  }
+
+  function bindEvents() {
+    $('#ht-add-btn').addEventListener('click', addHabit);
+    $('#ht-new-habit').addEventListener('keydown', (e) => { if (e.key === 'Enter') addHabit(); });
+
+    $$('.ht-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        $$('.ht-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        $$('.ht-view').forEach(v => v.classList.remove('active'));
+        currentView = tab.getAttribute('data-view');
+        $('#ht-view-' + currentView).classList.add('active');
+      });
+    });
+
+    $('#ht-edit-toggle').addEventListener('click', () => {
+      editMode = !editMode;
+      pendingDelete = null;
+      $('#ht-edit-toggle').textContent = editMode ? 'Listo' : 'Editar hábitos';
+      $('#ht-edit-toggle').classList.toggle('on', editMode);
+      renderToday();
+    });
+
+    $('#ht-month-prev').addEventListener('click', () => { monthOffset--; renderMonthGrid(); });
+    $('#ht-month-next').addEventListener('click', () => {
+      if (monthOffset < 0) monthOffset++;
+      renderMonthGrid();
+    });
+  }
+
+  function init() {
+    load();
+    bindEvents();
+    renderAll();
+  }
+
+  init();
+})();
+</script>
