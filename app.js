@@ -106,25 +106,24 @@
     }
   }
 
-  function handleDeleteClick(btn) {
-    const id = btn.getAttribute('data-delete');
-    if (pendingDelete === id) {
-      habits = habits.filter(h => h.id !== id);
-      saveHabits();
-      pendingDelete = null;
-      renderAll();
-    } else {
-      pendingDelete = id;
-      btn.textContent = '✔';
-      setTimeout(() => { if (pendingDelete === id) { pendingDelete = null; renderAll(); } }, 3000);
-    }
-  }
-
-  function startRename(id) {
+function startRename(id) {
     const nameEl = document.querySelector(`.ht-habit-name[data-id="${id}"]`);
     if (!nameEl) return;
     const habit = habits.find(h => h.id === id);
     const input = document.createElement('input');
     input.type = 'text';
     input.value = habit.name;
-    nameEl.replaceWith(input
+    nameEl.replaceWith(input);
+    input.focus();
+    input.select();
+    
+    const commit = () => {
+      const val = input.value.trim();
+      if (val) habit.name = val;
+      saveHabits();
+      renderAll();
+    };
+    
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') input.blur(); });
+  }
